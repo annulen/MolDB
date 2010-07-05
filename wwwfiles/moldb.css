@@ -1,0 +1,11 @@
+table {
+  font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+  font-size: 100%;
+  font-style: normal;
+  line-height: normal;
+  font-weight : 400;
+  background-position:   center 50%;
+}
+p            { font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 90%; font-weight : 400;}
+body         { font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 90%; font-weight : 400;}
+b            {font-weight : 600;}

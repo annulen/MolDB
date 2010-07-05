@@ -1,0 +1,73 @@
+#<?php  // for use as moldb5conf.php file, remove the "#" (also in the last line)
+# configuration data for MolDB5R database=======================================
+
+$database      = "moldb5r";     # name of the MySQL database
+$hostname      = "localhost";   # hostname of MySQL server, probably "localhost"
+$clientname    = "localhost";   # name of MySQL client, usually "localhost"
+$mysql_admin   = "root";        # MySQL administrator, usually "root"
+$rw_user       = "mdb5-admin";  # proxy user with CREATE and INSERT privileges
+$rw_password   = "top-secret";  # (make sure this script is unreadable to others)
+$ro_user       = "mdb5-user";   # proxy user with SELECT privilege
+$ro_password   = "secret";      # (better avoid dollar signs etc.)
+
+$drop_db       = "y";           # erase entire database before re-creating it?
+$tweakmolfiles = "y";           # "y" or "n" ("y" gives better performance)
+
+$prefix        = "";            # this allows to have different MolDB5 instances
+                                # in one MySQL database; each MolDB5 instance can
+                                # contain multiple data collections
+
+$sitename      = "MolDB5R demo"; # appears in title and headline
+$CHECKMOL      = "/usr/local/bin/checkmol";
+$MATCHMOL      = "/usr/local/bin/matchmol";
+$use_cmmmsrv   = "y";           # set to "y" if a cmmmsrv daemon is available
+$cmmmsrv_addr  = "127.0.0.1";   # must be numeric
+$cmmmsrv_port  = 55624;         # the default cmmmsrv port is 55624
+
+# the following options are relevant only if you want to use bitmap
+# graphics for 2D depiction of your molecular structures, otherwise
+# set $bitmapdir to an empty string ($bitmapdir = "")
+
+$MOL2PS        = "/usr/local/bin/mol2ps";
+$GHOSTSCRIPT   = "/usr/bin/gs";
+#$bitmapdir = "";
+$bitmapdir     = "/var/www/htdocs/moldb5/bitmaps";  # this is the base directory
+$bitmapURLdir  = "/moldb5/bitmaps";
+$digits        = 8;      # filenames will be 00000001.png, etc.
+$subdirdigits  = 4;      # uses the first x digits of $digits (0 = no subdirectories)
+#$mol2psopt     = "--rotate=auto3Donly --hydrogenonmethyl=off --color=/usr/local/etc/color.conf"; # options for mol2ps, e.g. "--showmolname=on"
+$mol2psopt     = "--rotate=auto3Donly --hydrogenonmethyl=off"; # options for mol2ps, e.g. "--showmolname=on"
+$scalingfactor = 0.22;          # 0.22 gives good results
+
+# further settings=============================================================
+
+$multiselect   = "y";           # allow selection of multiple data collections
+$default_db    = 1;             # default db_id
+$trustedIP     = "127.0.0.1, 192.168.0.10";   # max. 10 IP addresses
+$fpdict_mode   = 1;      # 1 = auto adjust, 2 = force 64 bit, 3 = force 32 bit
+$scratchdir    = "/data/moldb/moldb-scratch";  # needed by cp2mem.pl, 
+                                               # must be writeable by mysql UID, too
+$enablereactions = "y";    # if not "y": no reaction support
+
+# definition data for MolDB5R database (do not edit)============================
+
+# fixed table names
+$metatable     = "${prefix}moldb_meta";
+$fpdeftable    = "${prefix}moldb_fpdef";
+$memsuffix     = "_mem";  # will be appended to table name if applicable
+
+# other table names, will be prepended by appropriate prefix;
+$molstrucsuffix = "molstruc";
+$moldatasuffix  = "moldata";
+$molstatsuffix  = "molstat";
+$molfgbsuffix   = "molfgb";
+$molcfpsuffix   = "molcfp";
+$pic2dsuffix    = "pic2d";
+
+# extra tables for reaction data ===============================================
+$rxnstrucsuffix = "rxnstruc";
+$rxndatasuffix  = "rxndata";
+$rxncfpsuffix   = "rxncfp";
+$rxnfgbsuffix   = "rxnfgb";
+
+#?>

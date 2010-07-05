@@ -1,0 +1,4033 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta name="keywords" content="chemical structure database, MolDB5, checkmol, matchmol,
+  cmmmsrv, molecular structure database, freeware">
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta name="description" content="A free software package for running a web-based chemical
+  database with structure/substructure search capabilities.">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <title>MolDB5 documentation</title>
+  <meta name="author" content="Norbert Haider">
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <style type="text/css">
+<!--
+table {
+        font-family: Verdana, Geneva, Arial, helvetica, sans-serif;
+        font-size: 100%;
+        font-style: normal;
+        line-height: normal;
+         font-weight : 400;
+        background-position:   center 50%;
+}
+p            { font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 90%; font-weight : 400;}
+body         { font-family: Verdana, Geneva, Arial, helvetica, sans-serif; font-size: 90%; font-weight : 400;}
+b            {font-weight : 600;}
+-->
+  </style>
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>MolDB5R</h1>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a free software package for creating a web-based, searchable molecular
+structure/reaction database<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><span style="font-weight: bold;">Norbert Haider, University of Vienna, 2010</span> <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="mailto:norbert.haider@univie.ac.at">norbert.haider@univie.ac.at</a><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+These instructions explain how to set up MolDB5R as a web-based, fully
+searchable
+molecular structure database. Structures and data can be added via a
+web interface or by import from an MDL SD file (at the server command-line).&nbsp;This import option
+is shown by an example, using the SD files which are freely
+available from the PubChem FTP site at <a href="ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/">ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/</a>. Analogously, reactions and data can be imported from an MDL RD file.<br>
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+For some information about the original ideas, please visit<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/moldb.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/moldb.html</a><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+The previous version, MolDB5 (without reaction support), is documented at<br>
+
+
+
+
+
+
+<a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/moldb5doc.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/moldb5doc.html</a><br>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+MolDB5R is a collection of fully functional PHP scripts for running a
+structure/reaction database with search options for text, functional groups, and
+structure/substructure. Included are also some Perl scripts for database setup and data import
+from an SD or RD file.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<b>Download:</b> <a href="http://merian.pch.univie.ac.at/pch/download/chemistry/moldb/moldb5r.tar.gz">http://merian.pch.univie.ac.at/pch/download/chemistry/moldb/moldb5r.tar.gz</a>
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2>Content</h2>
+
+
+
+
+
+
+
+<a href="#features">Features</a><br>
+
+
+
+
+
+
+
+<a href="#background">Technical background</a><br>
+
+
+
+
+
+
+
+<a href="#installation">Installation</a><br>
+
+
+
+
+
+
+
+<a href="#using">Using MolDB5R</a><br>
+
+
+
+
+
+
+
+<a href="#admin">Administration of MolDB5R</a><br>
+
+
+
+
+
+
+
+<a href="#appendix_a">Appendix A</a> (permissions and privileges)<br>
+
+
+
+
+
+
+
+<a href="#appendix_b">Appendix B</a> (configuration file settings)<br>
+
+
+
+
+
+
+
+<a href="#appendix_c">Appendix C</a> (performance tuning)<br>
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2><a name="features"></a>Features<br>
+
+
+
+
+
+
+
+
+
+
+</h2>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li>Structure+data import from SD files, export to SD files</li>
+
+
+
+  <li>Reaction+data import from RD files, export to RD files</li>
+
+
+
+
+
+  <li>Text search</li>
+
+
+
+
+
+  <li>Browse functioanlity</li>
+
+
+
+
+
+  <li>Functional group search</li>
+
+
+
+  <li>Extended functional group search in reaction data collections (creation or loss of groups)</li>
+
+
+
+
+
+  <li>Structure/substructure/similarity search in structure data collections</li>
+
+
+
+  <li>Structure/substructure search in reaction data collections</li>
+
+
+
+
+
+  <li>Support for multiple data collections within one MySQL database</li>
+
+
+
+
+
+
+
+
+
+
+  <li>All search operations (text, functional groups, substructure) can span multiple data collections</li>
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  <li>Web-based administration tool for data collection management, structure and data import/editing</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Support for Windows as operating system (experimental!) in addition to Linux</li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2><a name="background"></a>Technical background</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+The system uses MySQL as the database engine, whereas its "chemical
+intelligence" is provided by the <a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/cmmm.html" target="_blank">checkmol/matchmol</a> program (or its
+socket-based server version, cmmmsrv). All relevant data are stored in
+MySQL tables, except the bitmap graphics of the molecules.
+Structure/substructure searches are performed in a two-stage process,
+consisting of an efficient pre-selection and a full atom-by-atom
+comparison of the remaining candidates. For pre-selection, a
+combination of molecular statistics with dictionary-based fingerprints
+and hash-based fingerprints is used. Optionally, this operation can be
+performed with memory-based MySQL tables instead of disk-based tables.
+This will make the search even faster. In a test installation on a
+standard PC (AMD Athlon 1.6 GHz CPU, 1.5 GB of memory), substructure
+searches in a database of 500.000 compounds are typically complete
+within a few seconds.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="http://synthon.pch.univie.ac.at/moldb5r/">Demo MolDB5R database</a><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2><a name="installation"></a>Installation</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Hardware requirements:&nbsp;</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+any x86 PC (the faster, the better)<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Software requirements:</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">Linux</span> operating system (any distribution) or Windows (experimental!)</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">Apache</span> web server 2.x</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">MySQL</span> 4.x or higher</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">PHP</span> 5.x</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">Perl</span> 5.x</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">==&gt; these packages
+are standard components of every Linux distribution (for Windows, the XAMPP package can be used)<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">moreover:</span></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;"></span>
+<ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">checkmol/matchmol</span>, v0.4c or higher<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==&gt; open-source software, available from <a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/cmmm.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html</a><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For faster operation, it is recommended to use the socket-based server
+version of checkmol/matchmol (named cmmmsrv) instead.</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">JME</span>, a Java applet for structure input, freely available
+from the author, Peter Ertl (Novartis). Please visit <a href="http://www.molinspiration.com/jme/getjme.html">http://www.molinspiration.com/jme/getjme.html</a><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if you want to create bitmap graphics of your molecules:<br>
+
+
+
+
+
+
+
+    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">mol2ps</span><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==&gt; open source software, available from <a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/mol2ps.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/mol2ps.html</a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li><span style="font-weight: bold;">GhostScript</span><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==&gt; open source software, available from
+    <a href="http://www.cs.wisc.edu/%7Eghost/">http://www.cs.wisc.edu/~ghost/</a>&nbsp;<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(usually included in the Linux distribution)</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+<div style="margin-left: 40px;">Note: this package was developed and
+tested on a Linux machine, but
+with a few adaptations it should run also on a&nbsp; FreeBSD system and
+(probably) under MacOS X. The Windows development and (some) testing
+was done on a virtualized Windows XP system with the XAMPP 1.7.0
+package. Instead of the Perl component of XAMPP, ActivePerl 5.6.1 was
+used and the missing database driver was installed via the PPM utility (<code>ppm install DBI</code>; <code>ppm install DBD::MySQL</code>).<br>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<h3>Where to start?
+</h3>
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+
+
+
+  <li>Make sure your web server is working correctly with PHP support (including the php5-mysql module). </li>
+
+
+
+
+
+
+
+
+
+
+  <li>Check if MySQL is working correctly and the administrative user (usually "root") has a password.</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Download and install checkmol/matchmol and mol2ps,
+preferentially in <code>/usr/local/bin</code> (Note: you do not have to compile
+these programs yourself, there are pre-compiled binaries available for
+Linux and Windows).</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Install Ghostscript (if not already installed)</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Create a working directory (e.g., within your home directory)</li>
+
+
+
+
+
+
+
+
+
+
+  <li>Create a directory within the web server's
+document root
+directory and make sure you have write permissions there. This will be
+the "MolDB5R web directory" which holds the PHP scripts etc.; create
+the two subdirectories "admin" and "bitmaps" within the MolDB5R web
+directory.</li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+After downloading and unpacking the MolDB5R package in your working
+directory, rename one of the two sample configuration files
+(moldb5.conf.sample_linux or moldb5.conf.sample_windows) into
+"<code>moldb5.conf</code>". Load this file into a text editor and <span style="font-weight: bold;">adjust the settings</span>. A detailed overview of all parameters is given in <a href="#appendix_b">Appendix B</a>. 
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+Select a name for your database, define user IDs for a proxy
+user with write privileges and another proxy user with
+read-only privileges (the example file "moldb5.conf"
+already contains these entries which can be accepted or modified;
+please change at least the passwords!).<br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+If you want to use bitmap graphics of your
+molecules (highly recommended), please specify a directory where
+these bitmaps should be stored and make sure you have
+write permission there. This should be the final location of the <code>.png</code> files
+(somewhere within your web server's document root, preferentiall as a
+subdirectory "bitmaps" of your MolDB5R web directory). If you don't want
+bitmaps, just set <code>$bitmapdir</code>
+to
+an empty string (""). Please note that only structure data collections
+(and not reaction data collections) can make use of this bitmap
+depiction.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Initialize</span> the MolDB5R database
+by running the Perl script "initdb.pl" (enter "<code>perl initdb.pl</code>"). You
+will be prompted for the password of the MySQL administrator
+(typically, this is the "root" user). The script will create the
+appropriate MySQL database and two tables within this database (one for
+metadata and one for the fragment dictionary). If everything goes well,
+the script will produce this output:<br>
+
+
+
+
+
+
+
+
+
+
+<code>setup of database $database OK</code> &nbsp; &nbsp;(where $database displays the name you have specified)<code><br>
+
+
+
+
+
+
+
+
+
+
+setup of fragment dictionary OK<br>
+
+
+
+
+
+
+
+
+
+
+</code><br>
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><br>
+
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Import of structures+data from an SD file (*.sdf):</span><br>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+As an example, we use <code>Compounds_00000001_00025000.sdf</code>
+(after unpacking the .gz file which you can download from the PubChem FTP
+site).<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+If you have wget installed, you can retrieve the PubChem file very
+conveniently by entering e.g.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<code>
+wget
+ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/Compound_00000001_00025000.sdf.gz</code><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Prerequisite: the checkmol/matchmol program must be installed (e.g., in
+<code>/usr/local/bin</code>, for more information, see<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/cmmm.html">http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html</a>).<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">These steps
+should be executed exactly in this order:</span><br>
+
+
+
+
+
+
+
+
+
+
+<ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  <li>Run the Perl script "sdfcheck.pl" with the name of the SD
+file to be imported as the command-line
+argument, e.g. "<code>perl sdfcheck.pl Compound_00000001_00025000.sdf</code>". This
+will create a definition file "sdf2moldb.def".&nbsp;By
+default, only the first 10000 records are
+inspected which should be sufficient in order to collect the&nbsp;necessary information about the file structure.&nbsp;<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Load the file "sdf2moldb.def" (see above) into a text
+editor and inspect it. Here, you can change the
+types of&nbsp;&nbsp; MySQL columns or their dimensions. In
+addition,
+you <span style="font-weight: bold;">MUST</span> rename the most descriptive field name (preferentially the one holding
+the molecule's trivial name or its systematic
+name) into "<span style="font-weight: bold;">mol_name</span>".
+If you do not do this, you will have
+to manually adjust all the PHP scripts in order to retrieve
+the correct field. In our PubChem example, change the MySQL field
+name (i.e., the 2nd column, between the first and the second
+":") "pubchem_iupac_name" into "mol_name". Many numeric fields are
+assumed to be
+floating-point numbers (MySQL type "DOUBLE"), but in fact are integer
+numbers, so their type should be changed into (e.g.)
+"INT(11)". In our PubChem example, only two fields should be kept as
+"DOUBLE": "pubchem_openeye_mw" and "pubchem_cactvs_xlogp". If you do
+not need one or more of the recognized
+SDF fields in your MySQL table, simply delete the
+corresponding lines from the definition file. Make sure that there is
+no field named "mol_id", because this is a reserved name of the MolDB5R
+system.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Import the content of your SD file into your MySQL database
+by running the Perl script "sdf2moldb.pl" with the
+name of the SD file to be imported as the command-line
+argument, e.g. with "<code>perl sdf2moldb.pl Compounds_00000001_00025000.sdf</code>".
+Depending on the number of molecules in the SD
+file, this operation may take some time (on a standard business PC,
+approx. 1-5 h for 100000 records). It is recommended to do
+this operation in a background job, most conveniently
+in a "screen" session (screen is a utility program
+which is included in most Linux distributions). <br>
+
+
+Note: you can create bitmap images of your structures either&nbsp;during the initial data import (set "<code>$make_bitmaps = 1;</code>" in the sdf2moldb.pl script) or later (set "<code>$make_bitmaps&nbsp;= 0;</code>").
+In the latter case, data import will be significantly faster (about 3
+times), bitmap files can then be created by running the updatebitmap.pl
+script in the util/ subdirectory.<br>
+
+
+
+
+
+
+
+
+
+
+    <br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>If you want to add new records, repeat step 3 with another
+SD file. By default, all data will be <span style="font-weight: bold;">appended</span>. ATTENTION: all
+SD files must have the same format (names and types
+of data fields) as the first one. For example, you can
+sequentially import all of the SD files from the PubChem site
+(see above). (And don't forget to let me know your performance
+figures for a database with &gt;40 million
+structures....)&nbsp; ;-)&nbsp;<br>
+
+
+
+
+
+
+
+&nbsp;</li>
+
+
+
+
+
+
+
+
+
+
+  <li>If you want to create a new data collection, repeat the steps
+described above, but change the "db_id=1" line in the sdf2moldb.def
+file into "db_id=2" (or higher, if applicable).</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+<span style="font-weight: bold;">Import of reactions+data from an RD file (*.rdf)</span><br>
+
+
+<br>
+
+
+Reactions with associated data can be imported in a very similar manner
+as described for SDF import (see above). Please note that in the
+present version, only "flat" (non-hierarchical) RD files can be handled.<br>
+
+
+<br>
+
+
+<ol>
+
+
+  <li>Run the Perl script "rdfcheck.pl" with the  name of the RD
+file to be imported as the command-line
+argument.<br>
+
+
+&nbsp;</li>
+
+
+  <li>Edit the resulting definition file "rdf2moldb.def". Define a
+field "rxn_name" and make sure that there is no field "rxn_id". Make
+sure that the db_id is set to a number which is still available.<br>
+
+
+&nbsp;</li>
+
+
+  <li>Import the RD file by running the Perl script "rdf2moldb.pl" with
+the RD file name as the command-line argument. Bitmap depiction is not
+possible for reactions, so there is no such option to be checked.</li>
+
+
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><br>
+
+
+
+
+
+
+
+
+
+
+<h3> Next, the web server part can be
+installed:
+</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Of course, you must know the location of
+your web server's
+document root directory. This might be something like "/var/www/htdocs"
+or
+"/xampp/htdocs", etc. (in a typical Apache installation, it is
+specified in the configuration file "httpd.conf"). On many websites, a
+special subdirectory (e.g, "public_html") witin a user's home directory
+can also be a valid location.<br>
+
+
+
+
+
+
+
+
+
+
+
+&nbsp;<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Within the document root, you should have already created a
+directory which will hold the MolDB5R PHP scripts, e.g. "moldb5r".
+Usually, the "bitmaps" directory will be there as a subdirectory (e.g.,
+"moldb5r/bitmaps"). Create another subdirectory named "admin" (e.g.,
+"moldb5r/admin").<br>
+
+
+
+
+
+
+
+
+
+
+
+&nbsp;<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <li>Copy all the files from
+the directory "wwwfiles" of this package to the MolDB5R web directory,
+copy also all of the scripts in "wwwfiles/admin" to the "admin"
+subdirectory of the web directory.<br>
+
+
+
+
+
+
+
+
+
+
+&nbsp;</li>
+
+
+
+
+
+
+
+
+
+
+
+  <li>The configuration file "moldb5conf.php" should contain exactly
+the same
+values for all parameters as the setup
+configuration file "moldb5.conf". In principle, "moldb5conf.php" is
+nothing else than an exact copy of "moldb5.conf" with just two extra
+lines (one at the beginning: "&lt;?php ", and one at the end: "?&gt;").
+For testing, this file can be placed also in the MolDB5R web directory.
+In a publicly accessible production environment, however, this file
+should be placed&nbsp;<span style="text-decoration: underline;">outside</span>
+the web server's document root, somewhere in the PHP include path
+(check your php.ini file and/or the PHP docs). Keeping the
+"moldb5conf.php" file within the document root is a security risk, as it
+contains plain-text passwords. Make sure the web server can read this
+file and revoke read permission for other users. If you are using
+bitmap graphics, make sure that the variable <code>$bitmapURLdir</code> points to the correct location, e.g. "/moldb5r/bitmaps" (no trailing slash!).<br>
+
+
+
+
+
+
+
+
+
+
+
+&nbsp;</li>
+
+
+
+
+
+
+
+
+
+
+
+  <li>Make sure you have the JME Java applet installed. The file
+"JME.jar" should be placed in the same directory as the main MolDB5R PHP
+scripts.&nbsp;</li>
+
+
+
+
+
+
+
+
+
+
+</ol>
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">Note 1: it is assumed that PHP is
+not running in "safe mode". If safe_mode is set to On in the php.ini
+file, you have to make sure that&nbsp; checkmol/matchmol is allowed to
+be executed, this can be done by specifying the corresponding directory
+in the variable <code>safe_mode_exec_dir</code> in php.ini (please check your PHP
+documentation).<br>
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+Note 2: by default, MolDB5R uses &nbsp;Latin1 character encoding; if
+you need other character sets, please adjust the "CREATE TABLE ...."
+statements in the respective Perl and PHP scripts, specifying e.g. UTF8
+as the character set. In addition, it may be necessary to modify the
+"my.cnf" MySQL configuration file by adding the line&nbsp;<samp>init-connect="SET NAMES 'utf8'</samp> in the [mysqld] section. Alternatively, you can add a line saying <samp>mysql_query("SET NAMES 'utf8'"); </samp>to every PHP script immediately after the&nbsp; <samp>mysql_select_db(...) or die(...);</samp> instruction. In the HTML header of all PHP scripts, change <samp>&lt;meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"&gt;</samp> into <samp>&lt;meta http-equiv="content-type" content="text/html; charset=utf-8"&gt;</samp>.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The subdirectory "<span style="font-weight: bold;">util</span>" of the working directory contains some Perl scripts:<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+
+
+
+  <li>mkmolstat.pl (re-)generates the molstat table(s) (which
+contains the molecular "statistics") by retrieving all structures and
+analyzing them with checkmol<br>
+
+
+&nbsp;</li>
+
+
+
+
+
+
+
+
+
+
+  <li>mkmolfgb.pl (re-)generates the molfgb table(s) (which contains
+information about the functional groups) by retrieving all structures
+and analyzing them with checkmol<br>
+
+
+&nbsp;</li>
+
+
+
+
+
+
+
+
+
+
+  <li>mkmolcfp.pl (re-)generates the molcfp table(s) (which contains
+the molecular "binary fingerprints", i.e., a combination of dictionary-based and hash-based fingerprints) by retrieving all
+structures and comparing them with the fragment dictionary which is
+stored
+in the fpdef table and in the fp01.sdf file; this is done with
+matchmol, using the "-F" option; hash-based fingerprints are generated by invocation of checkmol with the "-H" option.<br>
+
+
+&nbsp;</li>
+
+
+  <li>For reaction data collections, there are the analogous scripts
+mkrxnfgb.pl and mkrxncfp.pl (there is no mkrxnstat.pl, as the molstat
+descriptors are not used for reactions).<br>
+
+
+&nbsp;</li>
+
+
+  <li>updatebitmap.pl creates bitmap images in png format within the
+bitmaps subdirectory for all new structures, using the&nbsp;pic2d MySQL
+table for housekeeping. If this script is run via a cron job (e.g.,
+every night), the location of the configuration file should be
+specified by its absolute path (in line 22 of the script).</li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+These scripts (except updatebitmap.pl) should be run whenever a new version of
+checkmol/matchmol (or cmmmsrv, respectively) is installed on your system.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+The script cp2mem.pl will copy the persistent (disk-based) molstat and molcfp MySQL
+tables to memory-based MySQL tables, which are accessed
+faster than the disk-based tables. In order to make use of these
+tables, the moldb_meta table has to be modified (the "usemem" column
+must be set to 'T'), this can be done with the Perl script "setmem.pl"
+with an&nbsp; appropriate command-line argument, e.g. "perl setmem.pl
+1=T" (enabling memory-based tables for data collection 1). Do
+not forget to run cp2mem.pl after enabling memory-based tables and
+after each reboot of your machine,
+otherwise the memory-based tables would be empty. Generally, this
+option is recommended only for larger <span style="font-weight: bold;">read-only</span> data collections.<br>
+
+
+<br>
+
+
+There are also utility scripts for diagnostic purposes (listdb.pl),
+(re-)creation of definition files from the MySQL table structure
+(dumpdef.pl) and data export into SD or RD files (moldb2sdf.pl,
+moldb2rdf.pl). All these scripts contain a short description of their functionality.<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><br>
+
+
+
+
+
+
+
+
+
+
+That's it for the installation part. You may wish to adjust
+the HTML layout of the index.php and moldb.css files and the PHP
+scripts, replacing "MolDB5R" by something else. If you write any useful
+extensions, I would be grateful
+if you donate these scripts to the project. And a little link to the <a href="httop://merian.pch.univie.ac.at/%7Enhaider/cheminf/cmmm.html">checkmol/matchmol homepage</a> would also be appreciated.<br>
+
+&nbsp;<br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2><a name="using"></a>Using MolDB5R</h2>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Start page</span><br>
+
+
+
+
+
+
+
+
+
+On the start page (index.php), the user can select the data
+collection(s) from the list box and clicking the "Apply selection"
+button. Multiple selections (if enabled in the configuration file) can
+be made by pressing the &lt;Ctrl&gt; key while clicking at the list
+item. All search options are available via the navigation bar at the top
+of the page. A link to the administration page is displayed at the bottom (it may be advisable to remove this link...).<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Browse</span><br style="font-weight: bold;">
+
+
+
+
+
+
+
+
+
+All <span style="text-decoration: underline;">selected</span>
+data
+collections are available for browsing on this page, using standard
+navigation elements. Compound structures are displayed graphically
+(using bitmap pictures, if available), together with compound or
+reaction names and
+the ID number (mol_id or rxn_id). The latter represents a hyperlink to
+a detailed
+view of this particular entry (provided by the script "details.php").
+Reactions are always displayed with the JME applet in "depict" mode, in
+a slightly different appearance than png images and with higher
+consumption of client resources (CPU, memory).<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Text search</span><br>
+
+
+
+
+
+
+
+A very simple text search tool which by default only searches the
+"mol_name" (and/or "rxn_name")
+field. Search terms are not case-sensitive, as a wildcard character you
+can use the "%"&nbsp;symbol. By selecting the option "include other
+searchable fields", you can extend the search to all text fields which
+have been defined as "searchable" by the administrator (see below).<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Functional group search</span><br>
+
+
+
+
+
+
+
+
+
+This search option makes use of checkmol's capabilities to recognize
+approx. 200 different functional groups. Categorisation of compounds is
+performed already when they are entered into the database. The
+properties are stored in binary format in a special table (molfgb), and
+the search operation is extremely fast. Multiple selection of
+functional groups from the list box can be made by pressing the &lt;Ctrl&gt; key
+while clicking at the desired item.<br>
+
+
+<br>
+
+
+As soon as a <span style="font-weight: bold;">reaction</span> data collection is selected, there are <span style="font-weight: bold;">extended search options</span>
+available: the user can define whether the selected functional group(s)
+should be present in any reactant or in any product or should be
+created or lost during the reaction.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Structure search</span><br>
+
+
+
+
+
+
+
+
+
+This is the central search facility, permitting exact search,
+substructure search, and similarity search. In the browser, Java and
+Javascript must be enabled in order to display the JME applet. The
+input structure must contain at least three atoms. Checkboxes are
+available for more specific search modes (strict atom/bond type
+comparison, geometry checks) if a search results in too many hits. Structure search works also for reaction data collections.<br>
+
+
+<br>
+
+
+<span style="font-weight: bold;">Reaction structure search</span><br>
+
+
+As a new feature of MolDB5R, reaction data collections can be searched
+for structures or substructures (no similarity search option). User
+input is drawn in the JME applet and can be either one structure (as
+reactant or as product) or multiple structures, e.g., one reactant and
+one product (use the "new" button in JME to start a new molecule).
+There is also basic support for atom mapping (provided the
+corresponding mappings are present in the data collection).<br>
+
+
+Note: display of hits always uses the JME applet (in "depict" mode),
+which can cause excessive consumption of client resources for large hit
+lists. Therefore, a maximum of 50 (default value) hits is displayed at
+once, with a "continue" button for display of further hits. Please note
+also that reaction structure search is considerable slower than
+"normal" structure search.<br>
+
+
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2><a name="admin"></a>Administration of MolDB5R</h2>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Data collection handling</span><br>
+
+
+
+
+
+
+
+
+
+Apart from data import from SD or RD files, new entries can be added via the
+administration frontend in the "admin" subdirectory. The main page
+("admin/index.php") is used for adding new data collections and
+editing/erasing&nbsp; existing ones. Besides the (recommended) password
+protection of this directory, the "trustedIP" setting restricts access
+to these functioanlities (for a more detailed description of privileges, see below)..<br>
+
+
+
+
+
+
+
+
+
+On this page, only one data collection can be selected at a time. All operations
+(edit data collection properties, edit data field definitions, erase
+selected data collection) will apply to this selected data collection. Whereas
+"edit data collection properties" and "erase selected data collection"
+are self-explaining, the option "edit data field definitions" requires
+some more explanation: here, you can add new fields to the records of
+the selected data collection, determine their (MySQL) type, the name
+which should display on the "details" output, and (optionally) a field
+name for SDF/RDF export. A newly created data collection has only two data
+fields: "mol_id" (or "rxn_id", respectively; an integer number) and "mol_name" (or "rxn_name") which cannot be changed. A data
+collection which has been imported from an SD or RD file contains (probably)
+some more fields. Whenever you add a new field, you can choose its type
+from the drop-down listbox or enter any valid MySQL column type by
+selecting "other..." from the list and entering the correct type in the
+input box. Caution: there is no syntax checking done by MolDB5R, wrong
+input will result in MySQL errors. If you need some special MySQL
+column types and options, you should use some more sophisticated
+administration software like phpMyAdmin.<br>
+
+
+Note: changing the type of a data collection (from SD to RD or from RD
+to SD) is only possible if the data collection is still empty.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Structure/data input</span><br>
+
+
+
+
+
+
+
+
+
+Using "Add/edit data records", you can enter new structures/reactions+data or
+edit existing ones. This is done by the script "editdata.php", again
+all actions apply to the selected data collection.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Add new entry</span><br style="font-weight: bold;">
+
+
+
+
+
+
+
+
+
+Structures can be entered either by drawing, using the JME applet, or
+by pasting text in MDL molfile format into the text area. After
+submission, the structure is displayed and can again be edited if
+desired. After confirmation, the structure is added to the data
+collection and all relevant entries (molstat, functional group
+patterns, fingerprints) are made in the appropriate tables. The data
+entry form should be completed (at least, the name of the molecule
+should be entered) and saved. Several option can be selected from the "format" list for display of textual data:<br>
+
+<ul>
+
+  <li>hidden: this field and its content are not displayed</li>
+
+  <li>plain HTML: continuous text with no special formatting</li>
+
+  <li>multiline: output within &lt;pre&gt;......&lt;/pre&gt; tags, so that linebreaks will be respected</li>
+
+  <li>formula: all numbers will be subscripted</li>
+
+  <li>URL: text will be displayed as a hyperlink; optionally, a link label can be specified after a pipe symbol (|), for example: <samp>http://www.mydomain.org/mypage.html | My Homepage</samp></li>
+
+</ul>
+
+
+
+
+
+
+
+In the user frontend (browse, search, details), newly added structures are always displayed using the JME applet in
+"depict" mode, until the bitmap graphics have been created by running
+the "updatebitmap.pl" admin script. This should be done automatically
+by a cron job. In the admin frontend (add/edit structure), JME is always used for structure display.<br>
+
+
+Input of reactions is done analogously as described above, either by
+drawing in JME or by pasting into the text box in MDL rxnfile format.
+Atom maps should be created for as many atom pairs as possible.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Edit/erase entry</span><br>
+
+
+
+
+
+
+
+
+
+"Edit entry no." and "erase entry no." require a valid ID number
+(mol_id/rxn_id) as input. If you do not know this number, you can find it out
+by doing a search or just browse the data collection. Whenever an entry
+is erased, it is removed from all MySQL tables, but the original bitmap
+file (if it exists) will not be deleted. Instead, the "updatebitmap.pl"
+script will rename it into something like "00123456.png.to_be_deleted"
+on its next run. You can then use some OS shell command in order to
+actually delete these files (or modify the updatebitmap.pl script to do
+a real deletion).<br>
+
+
+When editing a <span style="font-weight: bold;">reaction</span>, an
+option is presented to "extract molecules". This allows to copy any
+reactant or product as a single structure to another (structure) data
+collection.<br>
+
+
+<br>
+
+
+<span style="font-weight: bold;">Copy entry</span><br>
+
+
+The specified entry number can be either duplicated within the same
+data collection (e.g., to create an entry for a closely related
+structure/reaction by subsequent minor modification) together with all
+textual/numeric data or it can be copied to a different data collection
+(in this case, only as a structure/reaction without any textual/numeric
+data, as the corresponding data fields may differ from collection to
+collection).
+<hr style="width: 100%; height: 2px;">
+<h2><a name="appendix_a"></a>Appendix A</h2>
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Permissions and privileges</span><br style="font-weight: bold;">
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+MolDB5R does not implement its own user administration, but relies on two access conditions:<br>
+
+
+
+
+
+
+
+<ol>
+
+
+
+
+
+
+
+  <li>The web server's standard mechanism to protect a directory. This is usually configured either in a <code>.htaccess</code> file in the directory in question or in the central configuration file (typically <code>/etc/apache2/httpd.conf</code>), using the <code>&lt;Directory&gt;</code> keyword. Usually, a combination of valid client domain and password protection (htpasswd) is specified there. <span style="font-weight: bold;">Caution:</span> <code>.htaccess</code> files are effective only if enabled in the <code>httpd.conf</code> file! Please refer to the Apache documentation. <span style="font-weight: bold;">It is highly recommended to restrict access to the "admin" subdirectory by this mechanism.<br>
+
+
+
+
+
+
+
+&nbsp;</span></li>
+
+
+
+
+
+
+
+  <li>The IP address of the client machine. Up to 10 "trusted IP" addresses can be specified in the&nbsp;<code>moldb5conf.php</code> file: these addresses have all possible privileges within MolDB5R (provided the user meets the access condition defined in <code>.htaccess</code>,
+see above). These users have the status of an "administrator". In
+addition, "sub-administrators" can be specified on a
+per-data-collection basis, listing their client IP address in the
+moldb_meta table, field "trustedIP" (again, up to 10 IP addresses).</li>
+
+
+
+
+
+
+
+</ol>
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Who can do what?</span><br>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+Only the <span style="font-weight: bold;">administrator(s)</span> can<br>
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+  <li>create a new data collection</li>
+
+
+
+
+
+
+
+  <li>change the properties of a data collection (including the
+definition of trusted IP addresses for sub-administrators of this data collection), in particular setting access mode
+("disabled", "read-only", "add/update", "full access")</li>
+
+
+
+
+
+
+
+  <li>erase an existing data collection</li>
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+The <span style="font-weight: bold;">administrator(s)</span> and the <span style="font-weight: bold;">sub-administrator(s)</span> of a data collection can<br>
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+  <li>add/edit/erase data records even to/from a "read-only" data collection</li>
+
+
+
+
+
+
+
+  <li>erase data records from an "add/update" data collection</li>
+
+
+
+
+
+
+
+  <li>add data fields ("columns") or change the properties of data
+fields, erase data fields (with all their content!) even if the data
+collection's access mode is not "full access"</li>
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Any user</span> who can access the "admin" subdirectory can<br>
+
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+
+  <li>add/edit/erase data records if the data collection is set to "full access"</li>
+
+
+
+
+
+
+
+  <li>add/edit data records  if the data collection is set to "add/update"</li>
+
+
+
+
+
+
+  <li>add/edit/erase data fields if the data collection's access mode is "full access"</li>
+
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;">
+<h2><a name="appendix_b"></a>Appendix B<span style="font-style: italic;"></span></h2>
+
+
+
+
+
+
+
+
+
+<span style="font-style: italic;"></span><span style="font-weight: bold;">Parameter settings in the moldb5.conf / moldb5conf.php files</span><br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+The configuration file <code>moldb5.conf</code> in the working directory and the PHP script <code>moldb5conf.php</code> in the MolDB5R web directory are almost identical: the only difference are the standard PHP tags "<code>&lt;?php</code> " and "<code>?&gt;</code>" in the first and last line of <code>moldb5conf.php</code>.<br>
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<code>$database&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "moldb5r";&nbsp;&nbsp;&nbsp;&nbsp; # name of the MySQL database<br>
+
+
+
+
+
+
+
+
+
+$hostname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "localhost";&nbsp;&nbsp; # hostname of MySQL server, probably "localhost"<br>
+
+
+
+
+
+
+
+
+
+$clientname&nbsp;&nbsp;&nbsp; = "localhost";&nbsp;&nbsp; # name of MySQL client, usually "localhost"<br>
+
+
+
+
+
+
+
+
+
+$mysql_admin&nbsp;&nbsp; = "root";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # MySQL administrator, usually "root"<br>
+
+
+
+
+
+
+
+
+
+$rw_user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "mdb5-admin";&nbsp; # proxy user with CREATE and INSERT privileges<br>
+
+
+
+
+
+
+
+
+
+$rw_password&nbsp;&nbsp; = "top-secret";&nbsp; # (make sure this script is unreadable to others)<br>
+
+
+
+
+
+
+
+
+
+$ro_user&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "mdb5-user";&nbsp;&nbsp; # proxy user with SELECT privilege<br>
+
+
+
+
+
+
+
+
+
+$ro_password&nbsp;&nbsp; = "secret";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # (better avoid dollar signs etc.)<br>
+
+
+
+
+
+
+
+
+
+$drop_db&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+"y";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+erase entire database before re-creating it?<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+</code><br>
+
+
+
+
+
+
+
+
+
+In this section, MySQL-specific settings have to be made: a databse
+name has to be specified. If $drop_db is set to "y", this database will
+be erased and recreated every time you run the initdb.pl script. The
+machine on which the MySQL server is running is specified by $hostname.
+Usually, the MySQL server and the web server are running on the same
+machine, in this case&nbsp;$hostname is set to "localhost" and
+$clientname is also set to "localhost". The name of the MySQL
+administrator user must be specified, ususally this is "root" (not to
+be confused with the system "root" user under Linux/Unix systems). The
+two proxy user accounts in MySQL will be automatically created when
+initdb.pl is run.<br>
+
+
+
+
+
+
+
+
+
+<code><br>
+
+
+$tweakmolfiles = "y";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # "y" or "n" ("y" gives better performance)</code><br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+If this parameter is set to "y", the imported molfiles will be replaced
+by (slightly) modified molfiles which contain some extra information
+about aromaticity. These "tweaked" molfiles are generated by checkmol
+and enable matchmol to do atom-by-atom comparisons (in a substructure
+search) more efficiently (see Appendix C). Tweaked molfiles are completely compatible
+with other programs which can import MDL molfiles.<br>
+
+
+
+
+
+
+
+
+
+<code><br>
+
+
+
+
+
+
+
+
+
+$prefix&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+"";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+this allows to have different MolDB5R instances<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# in one MySQL database; each MolDB5R instance can<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# contain multiple data collections<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+</code>As explained in the comment, you can use this extra prefix to
+keep more than one MolDB5R installation in a single MySQL database or
+you can place MolDB5R together with other database applications (such as
+bulletin boards, wikis, blogs, etc.) in a single MySQL database. This
+makes sense only in environments where you are restricted to use only
+one MySQL database.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<code>$sitename&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "MolDB5R demo"; # appears in title and headline<br>
+
+
+
+
+
+
+
+
+
+$CHECKMOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/local/bin/checkmol";&nbsp;<br>
+
+
+
+
+
+
+
+
+
+$MATCHMOL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/local/bin/matchmol";<br>
+
+
+
+
+
+
+
+
+
+$use_cmmmsrv&nbsp;&nbsp; =
+"y";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # set
+to "y" if a cmmmsrv daemon is available<br>
+
+
+
+
+
+
+
+
+
+$cmmmsrv_addr&nbsp; = "127.0.0.1";&nbsp;&nbsp; # must be numeric<br>
+
+
+
+
+
+
+
+
+
+$cmmmsrv_port&nbsp; = 55624;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # the default cmmmsrv port is 55624<br>
+
+
+
+
+
+
+
+
+
+</code><br>
+
+
+
+
+
+
+
+
+
+The $sitename string will appear in the header of all MolDB5R pages.<br>
+
+
+
+
+
+
+
+
+
+In $CHECKMOL and $MATCHMOL, the executables of checkmol and matchmol
+are specified. Under Linux, the programs are usually installed in the
+<code>/usr/local/bin</code> directory (most conveniently, matchmol is just a hard
+link to checkmol), under Windows it can be installed, for example, in
+<code>C:\bin</code> (but do not include the drive letter in these values). Setting $CHECKMOL to "checkmol" would be also OK if the program's
+directory is included in the system's search path (beware: this must
+apply also to the search path of the web server process).<br>
+
+
+
+
+
+
+
+
+
+Whereas all the backend Perl scripts rely on checkmol/matchmol, the PHP
+portion of the package can also use the cmmmsrv daemon instead, if
+installed on your system. This server process provides the same
+functionality as the command-line programs (checkmol/matchmol), but
+communicates with the web server via TCP sockets instead of shell
+calls. This gives somewhat better performance (see Appendix C). In principle, cmmmsrv
+can run on a different machine than the web server, in this case
+$cmmmsrv_addr must be set to the (numeric) IP address of this machine.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<code>$MOL2PS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = "/usr/local/bin/mol2ps";<br>
+
+
+
+
+
+
+
+
+
+$GHOSTSCRIPT&nbsp;&nbsp; = "/usr/bin/gs";<br>
+
+
+
+
+
+
+
+
+
+#$bitmapdir = "";<br>
+
+
+
+
+
+
+
+
+
+$bitmapdir&nbsp;&nbsp;&nbsp;&nbsp; = "/var/www/htdocs/moldb5r/bitmaps";&nbsp; # this is the base directory<br>
+
+
+
+
+
+
+
+
+
+$bitmapURLdir&nbsp; = "/moldb5r/bitmaps";<br>
+
+
+
+
+
+
+
+
+
+$digits&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 8;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # filenames will be 00000001.png, etc.<br>
+
+
+
+
+
+
+
+
+
+$subdirdigits&nbsp; = 4;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # uses the first x digits of $digits (0 = no subdirectories)<br>
+
+
+
+
+
+
+
+
+
+#$mol2psopt&nbsp;&nbsp;&nbsp;&nbsp; = "--rotate=auto3Donly
+--hydrogenonmethyl=off --color=/usr/local/etc/color.conf"; # options
+for mol2ps<br>
+
+
+
+
+
+
+
+
+
+$mol2psopt&nbsp;&nbsp;&nbsp;&nbsp; = "--rotate=auto3Donly --hydrogenonmethyl=off"; # options for mol2ps, e.g. "--showmolname=on"<br>
+
+
+
+
+
+
+
+
+
+$scalingfactor = 0.22;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # 0.22 gives good results<br>
+
+
+
+
+
+
+
+
+
+</code><br>
+
+
+
+
+
+
+
+
+
+These options are relevant only if you want to use bitmap
+graphics for 2D depiction of your molecular structures, otherwise set
+$bitmapdir to an empty string ($bitmapdir = ""). $MOL2PS points to the
+mol2ps program, $GHOSTSCRIPT to the Ghostscript program (under Windows,
+this must be the console application "gswin32c.exe"). The directory
+specified in $bitmapdir must be writable to you, but not necessarily to
+the web server. Whenever new structures are entered via the web
+frontend, bitmap files are not immediately created, but queued for
+creation by an auxiliary script "updatebitmap.pl" which should be run
+in regular intervals by the user who has write permission to
+$bitmapdir. Most conveniently, this is done by a cron job, e.g. once a
+day.<br>
+
+
+
+
+
+
+
+
+
+Within the bitmap directory, subdirectories are created automatically
+by updatebitmap.pl (as well as sdf2moldb.pl) for each data collection,
+using the number ("db_id") of that data collection as the directory
+name. For larger data collection (&gt;10000 structures), it is
+advisable to further divide the directory hierarchy by specifying a
+value of (e.g.) 4 as $subdirdigits and (e.g.) 8 as $digits for the PNG
+file names. This would give paths to the actual graphics files like
+<code>/var/www/htdocs/moldb5r/bitmaps/1/0000/00000045.png</code> (in an URL, this
+would be <code>/moldb5r/bitmaps/1/0000/00000045.png</code>). Thus, the maximum number
+of PNG files in one directory can be limited, otherwise you might run
+into problems with some shell commands.<br>
+
+
+
+
+
+
+
+
+
+For all available options of mol2ps, please refer to the <a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/mol2ps.html">mol2ps homepage</a> or just enter "mol2ps" on a command prompt.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+<code># further settings=============================================================<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+$multiselect&nbsp;&nbsp; =
+"y";&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #
+allow selection of multiple data collections<br>
+
+
+
+
+
+
+
+
+
+$default_db&nbsp;&nbsp;&nbsp; = 1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # default db_id<br>
+
+
+
+
+
+
+
+
+
+$trustedIP&nbsp;&nbsp;&nbsp;&nbsp; = "127.0.0.1, 192.168.0.10";&nbsp;&nbsp; # max. 10 IP addresses<br>
+
+
+
+
+
+
+
+
+
+$fpdict_mode&nbsp;&nbsp; = 1;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; # 1 = auto adjust, 2 = force 64 bit, 3 = force 32 bit<br>
+
+
+
+
+
+
+
+
+
+$scratchdir&nbsp;&nbsp;&nbsp; = "/data/moldb/moldb-scratch";&nbsp; # needed by cp2mem.pl, <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+# must be writeable by mysql UID, too<br>
+
+
+$enablereactions = "y";&nbsp;&nbsp;&nbsp; # if not "y": no reaction support<br>
+
+
+<br>
+
+
+
+
+
+
+
+
+
+</code><br>
+
+
+
+
+
+
+
+
+
+In this section, you can specify whether or not users can select only
+one data collection for searching/browsing or all available data
+collections. If there are more than one data collections, $default_db
+specifies the one which is automatically selected whenever a user
+visits your MolDB5R website.<br>
+
+
+
+
+
+
+
+
+
+In $trustedIP, you can specify up to 10 (numeric) IP addresses for
+extended administrative privileges. Besides protecting the "admin"
+subdirectory with a password (using the standard mechanisms of the Apache
+web server, e.g. .htaccess files), the $trustedIP directive gives extra
+protection. Only from a client machine listed in $trustedIP, you can
+change the settings of a data collection (e.g. from read-only to
+read/write) or erase an entire data collection. If you want to assign
+special administrative priveleges to just one data collection to
+somebody (e.g. for write access to a read-only data collection), use
+the analogous "trusted IP address" specification in the web
+administration frontend.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+The parameter $fpdictmode is rather technical and determines the format
+in which dictionary-based fingerprints are stored in the molcfp table
+(either as unsigned 32-bit integers or as 64-bit integers). In the
+first case, a MySQL column will store information about
+presence/absence of 31 structural elements from the dictionary, in the
+latter case, up the 62 bits will be used for this purpose. A setting of
+"1" is recommended.<br>
+
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+The $scratchdir variable holds the name of a directory for temporary
+files which are used by "cp2mem.pl" when it copies the content of
+disk-based tables (molstat and molcfp) to memory-based tables (see
+Appendix C). It is very important that not only the user who runs
+"cp2mem.pl" has write access to this directory, but also the MySQL
+server process (which usually runs as user "mysql").<br>
+
+
+<br>
+
+
+The $enablereactions variable controls whether or not MolDB5R presents
+its support for reaction databases to the user. If set to "n", the
+"Reaction Search" menu item will not be displayed and only SD data
+collections are presented for selection. Nevertheless, the
+administration front-end will contain all the tools for reaction handling.<br>
+
+
+
+
+
+
+<br>
+
+
+The last part of the configuration file contains various definitions
+for table names and should not be changed, unless you have a very good
+reason to do so. Please note that some new definitions (for reaction
+tables) have been added in MolDB5R which were not present in MolDB5 and previous versions.<br>
+
+
+
+
+
+
+
+
+
+<code><br>
+
+
+
+
+
+
+
+
+
+</code>
+<hr style="width: 100%; height: 2px;">
+<h2><a name="appendix_c"></a>Appendix C<span style="font-style: italic;"></span></h2>
+
+
+
+
+
+
+
+
+
+<span style="font-weight: bold;">Performance tuning</span><br>
+
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+There are three options which should be considered when maximum performance in substructre searches is desired:<br>
+
+
+
+
+
+
+<ul>
+
+
+
+
+
+
+  <li>Enabling the use of <span style="font-weight: bold;">"tweaked" molfiles</span>
+for internal storage of structures instead of regular molfiles. This is
+a feature of checkmol/matchmol: information about aromatic
+substructures (per atom and per bond) is stored in unused columns of
+the MDL molfile connection table. Whenever matchmol encounters such a
+"tweaked" molfile, it can skip lengthy ring detection and aromaticity
+determination routines (for a more detailed description, please check
+the <a href="http://merian.pch.univie.ac.at/%7Enhaider/cheminf/cmmm.html">checkmol/matchmol homepage</a>).
+The use of "tweaked" molfiles is enabled in the configuration file (see
+Appendix B), it is recommended to leave this parameter to "y".<br>
+
+
+
+
+
+
+&nbsp;</li>
+
+
+
+
+
+
+  <li>Using <span style="font-weight: bold;">cmmmsrv</span> instead of
+checkmol/matchmol: cmmmsrv is the socket-based server equivalent to the
+command-line programs, checkmol and matchmol. The PHP scripts
+communicate with cmmsrv in a similar way as with checkmol/matchmol, but
+instead of shell calls (via the <code>popen()</code> function of PHP),
+a TCP socket connection is established to the cmmmsrv process for
+reading and writing. This allows for larger blocksizes to be
+transferred between PHP and the cheminformatics engine, thus keeping
+the overhead smaller. Please note that cmmmsrv is available only for
+Linux, not for Windows. <br>
+
+
+
+
+
+
+If you prefer checkmol/matchmol instead of cmmmsrv, there is another
+performance improvement possible on a Linux system: replace the
+standard shell "bash" by the smaller and faster "ash" shell. This can
+be done by removing the symbolic link "<code>/bin/sh</code>" (which by default points to "<code>/bin/bash</code>" and creating a new symbolic link "<code>/bin/sh</code>" which points to "<code>/bin/ash</code>" (thanks to Ernst-Georg Schmid for this hint). <span style="text-decoration: underline;">Caution:</span> some Linux distributions may rely on <code>/bin/sh</code> to be a symbolic link to <code>/bin/bash</code> for their startup scripts (in <code>/etc/init.d</code>). To be on the safe side, replace all occurrences of "<code>#!/bin/sh</code>" in these script by "<code>#!/bin/bash</code>".<br>
+
+
+
+
+
+
+&nbsp;</li>
+
+
+
+
+
+
+  <li>Using <span style="font-weight: bold;">memory-based MySQL tables</span>
+instead of disk-based tables: the two tables "molstat" and "molcfp" are
+particularly critical in terms of search performance for the fast
+pre-selection process. MySQL offers the possibility to keep tables
+entirely in memory, whereas only their data structure is permanently
+stored on disk. These memory-based tables are accessed considerably
+faster than their disk-based counterparts. As a disadvantage, the
+content of memory-based tables is lost every time the MySQL server
+process is restarted. In MolDB5R, a combination of disk-based tables and
+memory-based copies of the original (persistent) tables is used. This
+means, all the information about molecular statistics (molstat) and
+fingerprints (molcfp) is permanently stored in the disk-based tables,
+and as an option you can enable copies of these tables as memory-based
+tables. In order to make use of this option, you have to set the
+"usemem" flag in the moldb_meta table to "T" for the data collection in
+question (this is done with the Perl script "setmem.pl") and
+subsequently you have to copy the entire content of the molstat and
+molcfp tables to memory (this is done with the Perl script "cp2mem.pl"
+or its alternative script "cp2mem_slow.pl"; the latter does not require
+write permissions for the MySQL process to a scratch directory). Please
+note that the use of memory-based tables is recommended only for
+"read-only" data collections, as any change to a chemical structure in
+a data collection will disable the memory-based tables until you run
+"cp2mem.pl" for the next time. For large data collections (e.g., with 1
+million structures), it will be necessary to have sufficient RAM in
+your machine and you probably have to adjust some settings in the MySQL
+configuration file (my.cnf): set <code>max_heap_table_size</code> and <code>tmp_table_size</code> to sufficiently high values.</li>
+
+
+
+
+
+
+</ul>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+<hr style="width: 100%; height: 2px;"><span style="font-style: italic;">NH, 2010-06-11; last update: 2010-06-15</span>
+</body>
+</html>

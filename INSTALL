@@ -1,0 +1,270 @@
+Quick installation instructions for MolDB5R (last update: 2010-06-15)
+
+For a more detailed description, please refer to moldb5rdoc.html in
+the doc directory.
+=====================================================================
+
+author: Norbert Haider, University of Vienna, 2009-2010
+        norbert.haider@univie.ac.at
+
+These instructions explain how to set up a web-based, fully 
+searchable molecular structure database and how to import data from 
+an MDL SD file. This is shown by an example using the SD files 
+which are freely available from the PubChem FTP site at 
+ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/
+
+For additional information, please visit
+http://merian.pch.univie.ac.at/~nhaider/cheminf/moldb.html
+
+=====================================================================
+
+
+Hardware requirements: any x86 PC (the faster, the better)
+
+Software requirements:
+
+. Linux operating system (any distribution)
+  or
+. Windows XP operating system (experimental!)
+. Apache web server 2.x
+. MySQL 4.x or higher
+. PHP 5.x
+. Perl 5.x
+===> these packages are standard components of every distribution
+
+moreover:
+. checkmol/matchmol, v0.4 or higher
+  ===> open-source software, available from
+  http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html
+  For faster operation, it is recommended to use the socket-based
+  server version of checkmol/matchmol (named cmmmsrv) instead.
+. JME, a Java applet for structure input, freely available
+  from the author, Peter Ertl (Novartis). Please visit
+  http://www.molinspiration.com/jme/getjme.html
+
+if you want to create bitmap graphics of your molecules:
+. mol2ps
+  ===> open source software, available from
+  http://merian.pch.univie.ac.at/~nhaider/cheminf/mol2ps.html
+. GhostScript
+  ===> open source software, available from
+  http://www.cs.wisc.edu/~ghost/  
+  (usually included in the Linux distribution)
+
+Note: this package was developed and tested on a Linux machine
+and it was adapted to run also on a Windows XP machine (except 
+for operating in socket mode in combination with cmmmsrv). 
+In principle, it should run also on a FreeBSD system and (perhaps)
+under MacOS X, as checkmol/matchmol has been ported to these systems.
+
+=====================================================================
+
+Where to start?
+
+First, you have to create the MySQL tables for the MolDB5R metainformation
+and for the fragment dictionary. If you want to import data from an SD file,
+some additional tables will be created. As an example, you can take the
+file test1.sdf in the util directory or some of the bigger PubChem SD files,
+e.g. Compounds_00000001_00025000.sdf (after unpacking the .gz file which
+you downloaded from the PubChem FTP site).
+
+If you have wget installed, you can retrieve the PubChem file ver
+conveniently by entering e.g.
+
+wget ftp://ftp.ncbi.nlm.nih.gov/pubchem/Compound/CURRENT-Full/SDF/Compound_00000001_00025000.sdf.gz
+
+Prerequisite: the checkmol/matchmol program should be
+installed in /usr/local/bin (for more information, see
+http://merian.pch.univie.ac.at/~nhaider/cheminf/cmmm.html).
+Alternatively, cmmmsrv should be up and running (by default,
+this daemon is listening on port 55624).
+
+The following steps should be executed exactly in this order:
+
+1) Rename one of the two sample configuration files into "moldb5.conf".
+   Edit the configuration file "moldb5.conf"; the only item 
+   which *must* be known at this time is the user-ID of the
+   MySQL administrator (usually this is "root"), and this
+   account should have a password (attention: this is not
+   the same as the Linux administrator, "root"). Please check
+   your MySQL documentation.
+   Select a name for your database, define UIDs for a proxy user 
+   with write privileges and another proxy user with read-only 
+   privileges (the example file "moldb5.conf" contains already 
+   these entries which can be accepted or modified (please change 
+   at least the passwords!).
+   If you want to use bitmap graphics of your molecules
+   (recommended), please specify a directory where these
+   bitmaps should be stored and make sure you have write
+   permission there. This can be the final location of
+   the .png files (somewhere within your web server's
+   document root) or a temporary directory from where you 
+   can copy the files to their final location later on. 
+   However, the latter option is not recommended.
+   It is much better to create the final bitmap directory
+   already at this stage. For this purpose, locate the web
+   server's document root directory, create aMolDB5R directory
+   and within the latter, create a bitmap directory. The name
+   of this directory must be specified in the "moldb5.conf" file.
+   If you don't want bitmaps, just set $bitmapdir to an 
+   empty string ("").
+
+2) From the command line, run the Perl script "initdb.pl"
+   by typing "perl initdb.pl". This will create the database
+   and the accounts for the proxy users with appropriate
+   privileges and passwords as specified in "moldb5.conf".
+   You will be prompted for the MySQL password of the MySQL
+   administrator (see above). This password will never be stored
+   in any file, so you have to enter it when you are prompted
+   for it. The Perl script "initfpdef.pl", located in the same
+   directory, will be called automatically in order to create
+   the MySQL table holding the fragment dictionary for the
+   dictionary-based fingerprints (these molecular structures 
+   are supplied in the file "fp01.sdf", please feel free to
+   modify it, if necessary).
+   
+3) Run the Perl script "sdfcheck.pl" with the name of the
+   SD file to be imported as the command-line argument, e.g.
+   "perl sdfcheck.pl Compound_00000001_00025000.sdf".
+   This will create a definition file "sdf2moldb.def".
+   By default, only the first 10000 records are inspected
+   which should be sufficient in order to collect the
+   necessary information about the file structure.
+   
+4) Load the file "sdf2moldb.def" (see above) into a text
+   editor and inspect it. Here, you can change the types of
+   MySQL variables or their dimensions. In addition, you *MUST*
+   rename the most descriptive field name (preferentially
+   holding the molecule's trivial name or its IUPAC name) into
+   "mol_name". If you do not do this, you will have to manually
+   adjust all the PHP scripts in order to retrieve the correct
+   field.
+   In our PubChem example, change the MySQL field name (i.e.,
+   the 2nd column, between the first and the second ":")
+   "pubchem_iupac_name" into "mol_name".
+   Many numeric fields are assumed to be floating-point numbers
+   (MySQL type "DOUBLE"), but in fact are integer numbers, so
+   their type should be changed into (e.g.) "INT(11)". In our
+   PubChem example, only two fields should be kept as "DOUBLE":
+   "pubchem_openeye_mw" and "pubchem_cactvs_xlogp".
+   If you do not need one or more of the recognized SDF fields 
+   in your MySQL table, simply delete the corresponding lines 
+   from the definition file.
+
+5) Import the content of your SD file into your MySQL database 
+   by running the Perl script "sdf2moldb.pl" with the name of 
+   the SD file to be imported as the command-line argument, 
+   e.g. with "perl sdf2moldb.pl Compounds_00000001_00025000.sdf".
+   Depending on the number of molecules in the SD file,
+   this operation may take some time (on my machine, approx.
+   1-2 h for 10000 records). It is recommended to do this
+   operation in a background job, most conveniently in a
+   "screen" session (screen is a utility program which is
+   included in most Linux distributions).
+
+6) If you want to add new records, repeat step 5 with another
+   SD file. All data will be appended. ATTENTION: all SD
+   files must have the same format (names and types of data
+   fields) as the first one. For example, you can sequentially
+   import all of the SD files from the PubChem site (see above).
+   (And don't forget to let me know your performance figures 
+   for a database with >25 million structures....)  ;-) 
+
+=====================================================================
+The directory "util" contains some Perl scripts:
+. mkmolstat.pl (re-)generates the molstat table (which contains the
+  molecular "statistics") by retrieving all structures and 
+  analyzing them with checkmol
+. mkmolfgb.pl (re-)generates the molfgb table (which contains information
+  about the functional groups) by retrieving all structures and
+  analyzing them with checkmol
+. mkmolcfp.pl (re-)generates the molcfp table (which contains the 
+  dictionary-based fingerprints as well as the hash-based fingerprints) 
+  by retrieving all structures and comparing them with the fragment 
+  dictionary which is stored in the fpdef table and in the fp01.sdf file; 
+  this is done with matchmol, using the "-F" option. At the same time,
+  hash-based fingerprints are generated by assigning hash codes to them; 
+  this is done with checkmol, using the "-H" option
+. analogous scripts for reaction tables (mkrxnfgb.pl and mkrxncfp.pl)
+. updatebitmap.pl creates bitmap images in png format within the bitmaps 
+  subdirectory for all new structures, using the pic2d MySQL table for 
+  housekeeping. If this script is run via a cron job (e.g., every night), 
+  the location of the configuration file should be specified by its 
+  absolute path (in line 22 of the script).
+These scripts (except updatebitmap.pl)  should be run whenever a new 
+version of checkmol/matchmol (or cmmmsrv) is installed on your system.
+
+The script cp2mem.pl will copy the persistent molstat and molcfp
+MySQL tables to memory-based MySQL tables, which are accessed
+faster than the disk-based tables. In order to make use of these
+tables, the "usemem" flag in the moldb_meta table has to set to 'T'.
+Do not forget to run cp2mem.pl after each reboot of your machine,
+otherwise the memory-based tables would be empty.
+
+There are also utility scripts for diagnostic purposes (listdb.pl), 
+(re-)creation of definition files from the MySQL table structure 
+(dumpdef.pl) and data export into SD or RD files (moldb2sdf.pl, 
+moldb2rdf.pl). All these scripts contain a short description of 
+their functionality.
+
+=====================================================================
+   
+Next, the web server part can be installed:
+
+1) Determine your web server's document root directory. This
+   might be something like "/var/www/htdocs" or "/xampp/htdocs", 
+   etc. (in a typical Apache installation, it is specified
+   in the configuration file "httpd.conf").
+   
+2) Within the document root, create a new directory which
+   will hold the MolDB5R PHP scripts, e.g. "moldb5r".
+   Note: if you going to use bitmap graphics, you should have
+   already created this directory and the "bitmaps" subdirectory
+   before starting data import.
+   
+3) Copy the *.php files into this directory, as well as  the 
+   "moldb.css" example style sheet. All of these files 
+   can be found in the directory "wwwfiles" of this package.
+   Create a subdirectory "admin" and copy the PHP scripts
+   from the "admin" subdirectory of the distribution to their
+   final location.
+   If you are using bitmap graphics, make sure that the corresponding 
+   bitmap directory has been created before SDF import. The location 
+   (URL) of this bitmap directory must be also specified in the 
+   configuration file, "moldb5conf.php" (see below). Please note 
+   that for large databases, it may be better to store groups of bitmap
+   files in subdirectories (using the $subdirdigits variable in
+   moldb5.conf and moldb5conf.php).
+   
+4) The configuration file "moldb5conf.php" should contain the
+   same values for all the settings as the setup configuration 
+   file "moldb5.conf".
+   This file should be placed _outside_ the web server's
+   document root, somewhere in the PHP include path (check
+   your php.ini file and/or the PHP docs). Keeping the
+   "moldb5conf.php" file within the document root is a
+   security risk, as it contains plain-text passwords.
+   Make sure the web server can read this file and revoke
+   read permission for other users.
+   If you are using bitmap graphics, make sure that the
+   variable $bitmapURLdir points to the correct location,
+   e.g. "/moldb5r/bitmaps" (no trailing slash!).
+   
+5) Make sure you have the JME Java applet installed. The
+   file "JME.jar" should be placed in the same directory as
+   the main MolDB5R PHP scripts.
+
+
+=====================================================================
+Note: it is assumed that PHP is not running in "safe mode". If
+safe_mode is set to On in the php.ini file, you have to make sure
+that  checkmol/matchmol is allowed to be executed, this can be
+done by specifying the corresponding directory in the variable
+safe_mode_exec_dir in php.ini (please check your PHP documentation).
+
+=====================================================================
+That's it. You may wish to adjust the HTML layout of the index.php 
+and moldb.css files and the PHP scripts, replacing "MolDB5R" by 
+something else. If you write any useful extensions, I would be grateful 
+if you donate these scripts to the project. And a little link to the 
+checkmol/matchmol homepage would also be appreciated.

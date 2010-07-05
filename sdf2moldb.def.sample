@@ -1,0 +1,63 @@
+# This file was created automatically by sdfcheck.pl.
+# It contains the mapping of SDF data fields and the
+# corresponding MySQL field names + proposed field types.
+#
+# Please inspect the definition lines below and, if necessary,
+# edit the MySQL field names and/or types. If a particular
+# field is not to be imported into the MySQL table, simply
+# delete the corresponding definition line.
+#
+# records inspected: 9
+# number of data fields found: 31
+#
+sdfilename=util/test1.sdf
+#
+# database definitions:
+db_id=1
+db_type=1
+db_name="test collection"
+db_description="This data collection was imported from an SDF file."
+db_access=1    # 0 = disabled, 1 = read-only, 2 = add/update, 3 = full access
+bitmapfile_digits=8
+bitmapfile_subdirdigits=4
+#
+# Format of definition lines:
+# SDF_field_name:MySQL_field_name:MySQL_field_type:HTML_field_name:HTML_format:::comment
+#
+# VERY IMPORTANT:
+# a) Please change the MySQL field name of the most descriptive
+#    data field into 'mol_name' (without the quotes).
+# b) Please make sure that there is no MySQL field name 'mol_id'
+#    as this name is reserved for internal use by the system.
+#
+PUBCHEM_COMPOUND_CID:pubchem_compound_cid:INT(11) NOT NULL:::::
+PUBCHEM_COMPOUND_CANONICALIZED:pubchem_compound_canonicalized:INT(11) NOT NULL:::::
+PUBCHEM_CACTVS_COMPLEXITY:pubchem_cactvs_complexity:INT(11) NOT NULL:::::
+PUBCHEM_CACTVS_HBOND_ACCEPTOR:pubchem_cactvs_hbond_acceptor:INT(11) NOT NULL:::::
+PUBCHEM_CACTVS_HBOND_DONOR:pubchem_cactvs_hbond_donor:INT(11) NOT NULL:::::
+PUBCHEM_CACTVS_ROTATABLE_BOND:pubchem_cactvs_rotatable_bond:INT(11) NOT NULL:::::
+PUBCHEM_CACTVS_SUBSKEYS:pubchem_cactvs_subskeys:VARCHAR(255) NOT NULL:::::max. 156 characters
+PUBCHEM_IUPAC_OPENEYE_NAME:pubchem_iupac_openeye_name:VARCHAR(200) NOT NULL:::::max. 62 characters
+PUBCHEM_IUPAC_CAS_NAME:pubchem_iupac_cas_name:VARCHAR(200) NOT NULL:::::max. 67 characters
+PUBCHEM_IUPAC_NAME:mol_name:TEXT NOT NULL:::::max. 62 characters
+PUBCHEM_IUPAC_SYSTEMATIC_NAME:pubchem_iupac_systematic_name:VARCHAR(200) NOT NULL:::::max. 65 characters
+PUBCHEM_IUPAC_TRADITIONAL_NAME:pubchem_iupac_traditional_name:VARCHAR(200) NOT NULL:::::max. 69 characters
+PUBCHEM_NIST_INCHI:pubchem_nist_inchi:VARCHAR(255) NOT NULL:::::max. 124 characters
+PUBCHEM_CACTVS_XLOGP:pubchem_cactvs_xlogp:DOUBLE NOT NULL:::::
+PUBCHEM_EXACT_MASS:pubchem_exact_mass:DOUBLE NOT NULL:::::
+PUBCHEM_MOLECULAR_FORMULA:pubchem_molecular_formula:VARCHAR(50) NOT NULL:::::max. 11 characters
+PUBCHEM_MOLECULAR_WEIGHT:pubchem_molecular_weight:DOUBLE NOT NULL:::::
+PUBCHEM_OPENEYE_CAN_SMILES:pubchem_openeye_can_smiles:VARCHAR(200) NOT NULL:::::max. 51 characters
+PUBCHEM_OPENEYE_ISO_SMILES:pubchem_openeye_iso_smiles:VARCHAR(200) NOT NULL:::::max. 51 characters
+PUBCHEM_CACTVS_TPSA:pubchem_cactvs_tpsa:DOUBLE NOT NULL:::::
+PUBCHEM_MONOISOTOPIC_WEIGHT:pubchem_monoisotopic_weight:DOUBLE NOT NULL:::::
+PUBCHEM_TOTAL_CHARGE:pubchem_total_charge:INT(11) NOT NULL:::::
+PUBCHEM_HEAVY_ATOM_COUNT:pubchem_heavy_atom_count:INT(11) NOT NULL:::::
+PUBCHEM_ATOM_DEF_STEREO_COUNT:pubchem_atom_def_stereo_count:INT(11) NOT NULL:::::
+PUBCHEM_ATOM_UDEF_STEREO_COUNT:pubchem_atom_udef_stereo_count:INT(11) NOT NULL:::::
+PUBCHEM_BOND_DEF_STEREO_COUNT:pubchem_bond_def_stereo_count:INT(11) NOT NULL:::::
+PUBCHEM_BOND_UDEF_STEREO_COUNT:pubchem_bond_udef_stereo_count:INT(11) NOT NULL:::::
+PUBCHEM_ISOTOPIC_ATOM_COUNT:pubchem_isotopic_atom_count:INT(11) NOT NULL:::::
+PUBCHEM_COMPONENT_COUNT:pubchem_component_count:INT(11) NOT NULL:::::
+PUBCHEM_CACTVS_TAUTO_COUNT:pubchem_cactvs_tauto_count:INT(11) NOT NULL:::::
+PUBCHEM_BONDANNOTATIONS:pubchem_bondannotations:VARCHAR(255) NOT NULL:::::max. 143 characters

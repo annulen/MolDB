@@ -1,0 +1,12 @@
+5.01:
+moldbfg.php: fixed a PHP problem with signed/unsigned 32-bit integers
+index.php:   minor layout changes
+
+5.02:
+sdf2moldb.pl removed redundant definition of $MOL2PS, $GHOSTSCRIPT
+details.php  tiny bug fix for "edit" link (if $access >= 2)
+moldbfg.php  restructured and extended the list of functional groups
+
+5R.00:
+based on 5.02, adds support for reaction files; various other new
+features and bugfixes
